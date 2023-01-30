@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <style>
@@ -9,46 +10,72 @@
         align-items: center;
         height: 100vh;
       }
-
-      .bird {
+      .bird-emoji {
         position: absolute;
-        font-size: 48px;
-        transition: all 1s;
+        font-size: 50px;
+      }
+      .timer {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        font-size: 20px;
       }
     </style>
   </head>
   <body>
-    <button id="generate-button">Generate Random Bird</button>
-    <div id="bird-container"></div>
-    <script>
-      const birdEmojis = [
-        "🐦",
-        "🕊️",
-        "🦆",
-        "🦅",
-        "🦢",
-        "🦉",
-        "🦔",
-        "🦩"
-      ];
-
-      const generateButton = document.getElementById("generate-button");
-      const birdContainer = document.getElementById("bird-container");
-
-      generateButton.addEventListener("click", () => {
-        const birdEmoji = birdEmojis[Math.floor(Math.random() * birdEmojis.length)];
-        const birdDiv = document.createElement("div");
-        birdDiv.innerHTML = birdEmoji;
-        birdDiv.classList.add("bird");
-        birdDiv.style.top = Math.random() * 90 + "%";
-        birdDiv.style.left = Math.random() * 90 + "%";
-        birdContainer.appendChild(birdDiv);
-
-        setInterval(() => {
-          birdDiv.style.top = Math.random() * 90 + "%";
-          birdDiv.style.left = Math.random() * 90 + "%";
-        }, 1000);
-      });
-    </script>
+    <div class="timer">Time: <span id="time">0</span></div>
+    <div id="birdContainer"></div>
   </body>
+  <script>
+    const birdEmojis = ["🐦", "🦆", "🐤", "🐧", "🦉", "🐦", "🐣"];
+    let birdInterval;
+    let timerInterval;
+    let currentTime = 0;
+    let delay = 5000;
+    let currentBirdIndex = 0;
+
+    function randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function randomPosition() {
+      return {
+        x: randomIntFromInterval(0, window.innerWidth - 50),
+        y: randomIntFromInterval(0, window.innerHeight - 50),
+      };
+    }
+
+    function updateBird() {
+      const birdContainer = document.getElementById("birdContainer");
+      const birdEmoji = document.createElement("div");
+      birdEmoji.classList.add("bird-emoji");
+      const position = randomPosition();
+      birdEmoji.style.left = position.x + "px";
+      birdEmoji.style.top = position.y + "px";
+      birdEmoji.innerText = birdEmojis[currentBirdIndex];
+      birdContainer.appendChild(birdEmoji);
+
+      setTimeout(() => {
+        birdEmoji.remove();
+      }, delay);
+    }
+
+    function updateTime() {
+      currentTime++;
+      document.getElementById("time").innerText = currentTime;
+    }
+
+    function updateCurrentBirdIndex() {
+      currentBirdIndex = (currentBirdIndex + 1) % birdEmojis.length;
+    }
+
+    birdInterval = setInterval(() => {
+      updateBird();
+      updateCurrentBirdIndex();
+    }, 8000);
+
+    timerInterval = setInterval(() => {
+      updateTime();
+    }, 1000);
+  </script>
 </html>
