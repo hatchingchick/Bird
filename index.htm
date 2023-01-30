@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <style>
+      body {
+        background-image: url("https://naokeyzmt.com/blog/wp-content/themes/naokeyfirst/assets/images/article/2019/july/06/petitcom4_51_thumb.jpg");
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .bird {
+        position: absolute;
+        font-size: 48px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="generate-button">Generate Random Bird</button>
+    <div id="bird-container"></div>
+    <script>
+      const birdEmojis = [
+        "🐦",
+        "🕊️",
+        "🦆",
+        "🦅",
+        "🦢",
+        "🦉",
+        "🦔",
+        "🦩"
+      ];
+
+      const generateButton = document.getElementById("generate-button");
+      const birdContainer = document.getElementById("bird-container");
+
+      generateButton.addEventListener("click", () => {
+        const birdEmoji = birdEmojis[Math.floor(Math.random() * birdEmojis.length)];
+        const birdDiv = document.createElement("div");
+        birdDiv.innerHTML = birdEmoji;
+        birdDiv.classList.add("bird");
+        birdDiv.style.top = Math.random() * 90 + "%";
+        birdDiv.style.left = Math.random() * 90 + "%";
+        birdContainer.appendChild(birdDiv);
+
+        setInterval(() => {
+          birdDiv.style.top = Math.random() * 90 + "%";
+          birdDiv.style.left = Math.random() * 90 + "%";
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
